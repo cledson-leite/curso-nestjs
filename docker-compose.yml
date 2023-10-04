@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres-db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD: "Mdd121076"
+    ports:
+      - "5432:5432"
+    volumes:
+      - C:/Users/csbet/Desktop/Docker-Compose/PostgreSQL:/var/lib/postgresql/data 
+    networks:
+      - postgres-network
+      
+  pgadmin-db:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "csbetsonline@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "Mdd121076"
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres-db
+    networks:
+      - postgres-network
+
+networks: 
+  postgres-network:
+    driver: bridge
