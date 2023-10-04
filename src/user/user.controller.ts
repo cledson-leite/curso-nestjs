@@ -6,14 +6,19 @@ import {
 	Param,
 	ParseIntPipe,
 	Post,
-	Put
+	Put,
+	UseInterceptors
 } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { UserService } from './user.service';
+import { LogInterceptor } from '../interception/log.interceptor';
 
+@UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {
 	constructor(private readonly service: UserService) {}
+
+	// @UseInterceptors(LogInterceptor) usado apenas no metodo
 	@Post()
 	async create(@Body() data: CreateUserDto) {
 		return await this.service.create(data);
