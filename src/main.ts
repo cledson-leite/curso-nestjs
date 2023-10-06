@@ -4,11 +4,11 @@ import { AppModule } from './app.module';
 // import { LogInterceptor } from './log/log.interceptor';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
+  //yarn add class-validation class-transform
+  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalInterceptors(new LogInterceptor()); para uso em toda aaplicação
 
-	app.useGlobalPipes(new ValidationPipe());
-	// app.useGlobalInterceptors(new LogInterceptor()); para uso em toda aaplicação
-
-	await app.listen(3000);
+  await app.listen(3000);
 }
 bootstrap();
