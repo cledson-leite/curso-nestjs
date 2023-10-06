@@ -5,14 +5,20 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { PrismaModule } from '../prisma/prisma.module';
+// import { PrismaModule } from '../prisma/prisma.module';
 import { UserService } from './user.service';
 import { CheckIdMiddleware } from '../middleware/check-id/check-id.middleware';
 import { StorageModule } from 'src/storage/storage.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './entity/UserEmtity';
 
 @Module({
   //modulos externos que serão usados neste modulo
-  imports: [PrismaModule, StorageModule],
+  imports: [
+    // PrismaModule,
+    StorageModule,
+    TypeOrmModule.forFeature([UserEntity]),
+  ],
   //controles internos usados neste modulo
   controllers: [UserController],
   //serviços internos e classes internas que serão injetados no controles ou demais class

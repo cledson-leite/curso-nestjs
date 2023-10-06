@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './user/entity/UserEmtity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -21,10 +24,19 @@ import { StorageModule } from './storage/storage.module';
         limit: 100000,
       },
     ]),
+    //yarn add @nestjs/config
+    ConfigModule.forRoot(),
     UserModule,
     PrismaModule,
     AuthModule,
     StorageModule,
+    //yarn add typeorm pg(banco usado) @nestjs/typeorm
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      entities: [UserEntity],
+      migrations: [],
+    }),
   ],
   controllers: [AppController],
   providers: [
