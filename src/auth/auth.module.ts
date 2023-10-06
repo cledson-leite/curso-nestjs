@@ -6,9 +6,10 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { UserModule } from '../user/user.module';
 
 @Module({
-  //yarn add @nestjs/jwt
   imports: [
-    JwtModule.register({ secret: `qDwXCy!~>hk#kQ1v]?+j)sMkcMh,VK):` }),
+    //yarn add @nestjs/config
+    //yarn add @nestjs/jwt
+    JwtModule.register({ secret: process.env.JWT_SECRET }),
     PrismaModule,
     UserModule,
   ],

@@ -1,5 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { compare, genSalt, hash } from 'bcrypt';
 import { SignUpRequestDto } from './dto/SignUpRequestDto';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
@@ -7,8 +12,6 @@ import { LoginRequestDto } from './dto/LoginRequestDto';
 
 @Injectable()
 export class AuthService {
-  private audience: 'user';
-  private issuer: 'auth';
   constructor(
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
@@ -43,18 +46,25 @@ export class AuthService {
   }
 
   async signup(data: SignUpRequestDto) {
-    const user = await this.prisma.user.create({
-      data,
-    });
-
-    return this.create(user);
+    const salt = await genSalt();
+    data.password = await hash(data.password, salt);
+    try {
+      const user = await this.prisma.user.create({
+        data,
+      });
+      return this.create(user);
+    } catch (error) {
+      throw new BadRequestException('Email e/ou Senha invalidos');
+    }
   }
   async login({ email, password }: LoginRequestDto) {
     const user = await this.prisma.user.findUnique({
-      where: { email, password },
+      where: { email },
     });
-
     if (!user) throw new UnauthorizedException('Email e/ou Senha invalidos');
+
+    const isValid = await compare(password, user.password);
+    if (!isValid) throw new UnauthorizedException('Email e/ou Senha invalidos');
 
     return this.create(user);
   }
@@ -71,10 +81,12 @@ export class AuthService {
   async reset(password: string, token: string) {
     //TODO verificar token
     token;
-    const id = 6;
+    const id = 3;
+    const salt = await genSalt();
+    const hashed = await hash(password, salt);
     const user = await this.prisma.user.update({
       where: { id },
-      data: { password },
+      data: { password: hashed },
     });
     return this.create(user);
   }

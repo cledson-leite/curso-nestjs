@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  //options é passada como um parametro em forma de objeto
+  app.enableCors();
   //yarn add class-validation class-transform
   app.useGlobalPipes(new ValidationPipe());
   // app.useGlobalInterceptors(new LogInterceptor()); para uso em toda aaplicação
