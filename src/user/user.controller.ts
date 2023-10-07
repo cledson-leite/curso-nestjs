@@ -15,7 +15,9 @@ import { UserService } from './user.service';
 import { LogInterceptor } from '../interception/log.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StorageService } from '../storage/storage.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {

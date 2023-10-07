@@ -25,7 +25,9 @@ import { ConfigModule } from '@nestjs/config';
       },
     ]),
     //yarn add @nestjs/config
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: process.env.ENV === 'test' ? '.env.test' : '.env',
+    }),
     UserModule,
     PrismaModule,
     AuthModule,

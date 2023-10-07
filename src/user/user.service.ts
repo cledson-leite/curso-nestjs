@@ -14,12 +14,12 @@ export class UserService {
     private readonly repository: Repository<UserEntity>,
   ) {}
 
-  async create({ name, email, password }: CreateUserDto) {
+  async create({ name, email, password, role }: CreateUserDto) {
     // return await this.prisma.user.create({
     //   data: { name, email, password },
     //   select: { id: true },
     // });
-    const user = this.repository.create({ name, email, password });
+    const user = this.repository.create({ name, email, password, role });
     await this.repository.save(user);
     return user;
   }
