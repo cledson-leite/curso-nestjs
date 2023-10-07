@@ -54,7 +54,8 @@ export class AuthService {
       });
       return this.create(user);
     } catch (error) {
-      throw new BadRequestException('Email e/ou Senha invalidos');
+      // throw new BadRequestException('Email e/ou Senha invalidos');
+      throw new BadRequestException(error);
     }
   }
   async login({ email, password }: LoginRequestDto) {

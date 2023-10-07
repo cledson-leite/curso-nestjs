@@ -31,7 +31,8 @@ export class AuthController {
   })
   @Post('signUp')
   async signUp(@Body() body: SignUpRequestDto) {
-    return await this.service.signup(body);
+    const user = await this.service.signup(body);
+    return user;
   }
   @Post('forget')
   async forget(@Body() { email }: ForgetRequestDto) {

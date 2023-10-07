@@ -10,6 +10,7 @@ import { StorageModule } from './storage/storage.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/entity/UserEmtity';
 import { ConfigModule } from '@nestjs/config';
+import { KafkaController } from './user/kafka.controller';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { ConfigModule } from '@nestjs/config';
       migrations: [],
     }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, KafkaController],
   providers: [
     AppService,
     {
