@@ -36,7 +36,7 @@ import { Module } from '@nestjs/common';
     CacheModule.register({
       store: redisStore,
       host: 'localhost',
-      post: 6379,
+      port: 6379,
     }),
     UserModule,
     PrismaModule,
