@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -11,6 +10,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/entity/UserEmtity';
 import { ConfigModule } from '@nestjs/config';
 import { KafkaController } from './user/kafka.controller';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -28,6 +30,13 @@ import { KafkaController } from './user/kafka.controller';
     //yarn add @nestjs/config
     ConfigModule.forRoot({
       envFilePath: process.env.ENV === 'test' ? '.env.test' : '.env',
+    }),
+    //yarn add @nestjs/cache-manager cache-manager cache-manager-redis-yet
+    //yarn add -D @types/cache-manager
+    CacheModule.register({
+      store: redisStore,
+      host: 'localhost',
+      post: 6379,
     }),
     UserModule,
     PrismaModule,
